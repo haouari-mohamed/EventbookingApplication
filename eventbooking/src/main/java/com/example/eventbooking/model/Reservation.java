@@ -13,16 +13,14 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Date date;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "event_id", nullable = false)
+    @JoinColumn(name = "event_id")
     private Event event;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date reservationDate;
 
 }
