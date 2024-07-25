@@ -44,7 +44,7 @@ public class EventController {
 
     @GetMapping("/search")
     public ResponseEntity<List<Event>> searchEvents(@RequestParam(required = false) String category,
-                                                     @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date start,
+                                                    @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date start,
                                                     @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date end) {
         return ResponseEntity.ok(eventService.searchEvents(category, start, end));
     }
