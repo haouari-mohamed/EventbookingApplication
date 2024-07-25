@@ -2,21 +2,26 @@ package com.example.eventbooking.controller;
 
 import com.example.eventbooking.config.JwtAuth;
 import com.example.eventbooking.model.User;
+import com.example.eventbooking.model.UserRole;
 import com.example.eventbooking.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/user")
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Autowired
     private JwtAuth jwtAuth;
@@ -47,13 +52,15 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody User user) {
-        User foundUser = userService.findByUsername(user.getUsername());
-        if (foundUser != null && new BCryptPasswordEncoder().matches(user.getPassword(), foundUser.getPassword())) {
-            List<String> roles = Collections.singletonList(foundUser.getRole().name());
-            String token = jwtAuth.generateToken(foundUser.getUsername(), roles);
-            return ResponseEntity.ok(token);
-        }
-        return ResponseEntity.status(401).body("Invalid username or password");
+    public ResponseEntity<?> login(@RequestBody User user) {
+        User user2 = userService.findByUsername(user.getUsername());
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
+        );
+        UserRole role = user2.getRole();
+        String token = jwtAuth.generateToken(user.getUsername(), role);
+        Map<String, String> response = new HashMap<>();
+        response.put("token", token);
+        return ResponseEntity.ok(response);
     }
 }

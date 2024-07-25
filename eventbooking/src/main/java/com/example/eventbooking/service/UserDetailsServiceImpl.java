@@ -1,13 +1,16 @@
 package com.example.eventbooking.service;
 
+
 import com.example.eventbooking.model.User;
 import com.example.eventbooking.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("customUserDetailsService")
+@Primary
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;

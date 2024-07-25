@@ -19,7 +19,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.List;
 import java.util.stream.Collectors;
-
 @Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
@@ -52,7 +51,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 response.getWriter().write("Authentication failed: " + e.getMessage());
-                return; // Exit after handling error
+                e.printStackTrace(); // Add this line to log the exception
+                return;
             }
         }
         filterChain.doFilter(request, response);

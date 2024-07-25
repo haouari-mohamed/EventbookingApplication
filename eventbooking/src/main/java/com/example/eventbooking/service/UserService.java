@@ -1,6 +1,8 @@
 package com.example.eventbooking.service;
 
+import com.example.eventbooking.exception.ResourceNotFoundException;
 import com.example.eventbooking.model.User;
+import com.example.eventbooking.model.UserRole;
 import com.example.eventbooking.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
