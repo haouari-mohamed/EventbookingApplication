@@ -119,6 +119,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>hello-events</finalName>
 	</build>
 
 </project>
