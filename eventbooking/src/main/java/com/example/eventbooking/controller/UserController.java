@@ -26,10 +26,10 @@ public class UserController {
     @Autowired
     private JwtAuth jwtAuth;
 
-    @PostMapping("/signup")
-    public User saveUtilisateur(@RequestBody User user) {
-        return userService.saveUser(user);
-    }
+//    @PostMapping("/signup")
+//    public User saveUtilisateur(@RequestBody User user) {
+//        return userService.saveUser(user);
+//    }
 
     @GetMapping("/getUtilisateur/{id}")
     public User getUtilisateur(@PathVariable int id) {
@@ -62,5 +62,11 @@ public class UserController {
         Map<String, String> response = new HashMap<>();
         response.put("token", token);
         return ResponseEntity.ok(response);
+    }
+    @PostMapping("/signup")
+    public ResponseEntity<?> registerUser(@RequestBody User user) {
+        user.setRole(UserRole.CLIENT);
+        User savedUser = userService.saveUser(user);
+        return ResponseEntity.ok(savedUser);
     }
 }
