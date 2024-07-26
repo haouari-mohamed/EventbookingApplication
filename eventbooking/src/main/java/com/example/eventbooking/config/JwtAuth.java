@@ -16,13 +16,13 @@ public class JwtAuth {
     @Value("${security.jwt.secret-key}")
     private String secretKey;
 
-    public String generateToken(String username, UserRole roles) {
+    public String generateToken(String username, UserRole role) {
         Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         return Jwts.builder()
                 .setSubject(username)
-                .claim("roles", roles)
+                .claim("role", role.name())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000)) // Token valid for 24 hours
+                .setExpiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
                 .signWith(key)
                 .compact();
     }
