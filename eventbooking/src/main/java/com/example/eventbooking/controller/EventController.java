@@ -1,7 +1,9 @@
 package com.example.eventbooking.controller;
 
 import com.example.eventbooking.model.Event;
+import com.example.eventbooking.model.Reservation;
 import com.example.eventbooking.service.EventService;
+import com.example.eventbooking.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +17,19 @@ import java.util.List;
 public class EventController {
     @Autowired
     private EventService eventService;
+    @Autowired
+    private ReservationService reservationService;
 
-    @PostMapping
-    public ResponseEntity<Event> createEvent(@RequestBody Event event) {
-        return ResponseEntity.ok(eventService.createEvent(event));
+//    @PostMapping
+//    public ResponseEntity<Event> createEvent(@RequestBody Event event) {
+//        return ResponseEntity.ok(eventService.createEvent(event));
+//    }
+    @PostMapping("/{eventId}/book")
+    public ResponseEntity<?> bookEvent(@PathVariable Long eventId, @RequestBody Reservation reservation) {
+        Event event = eventService.getEventById(eventId);
+        reservation.setEvent(event);
+        Reservation savedReservation = reservationService.createReservation(reservation);
+        return ResponseEntity.ok(savedReservation);
     }
 
     @PutMapping("/{id}")
