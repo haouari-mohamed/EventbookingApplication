@@ -16,17 +16,17 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Event> createEvent(@RequestBody Event event) {
         return ResponseEntity.ok(eventService.createEvent(event));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestBody Event event) {
         return ResponseEntity.ok(eventService.updateEvent(id, event));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteEvent(@PathVariable Long id) {
         eventService.deleteEvent(id);
         return ResponseEntity.ok().build();
