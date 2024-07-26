@@ -17,8 +17,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
@@ -40,9 +42,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                         .getBody();
 
                 String username = claims.getSubject();
-                List<SimpleGrantedAuthority> authorities = ((List<String>) claims.get("roles")).stream()
-                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-                        .collect(Collectors.toList());
+                String role = claims.get("roles", String.class);
+                List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role));
 
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         username, null, authorities);
@@ -51,7 +52,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 response.getWriter().write("Authentication failed: " + e.getMessage());
-                e.printStackTrace(); // Add this line to log the exception
+                e.printStackTrace();
                 return;
             }
         }
