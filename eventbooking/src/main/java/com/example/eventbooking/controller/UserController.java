@@ -16,6 +16,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins = "http://localhost:4200/")
+
 public class UserController {
     @Autowired
     private UserService userService;
@@ -61,6 +63,7 @@ public class UserController {
         String token = jwtAuth.generateToken(user.getUsername(), role);
         Map<String, String> response = new HashMap<>();
         response.put("token", token);
+      response.put("role", role.name()); //++++++++++++++++++++++++++
         return ResponseEntity.ok(response);
     }
     @PostMapping("/signup")

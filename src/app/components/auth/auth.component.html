@@ -1,0 +1,16 @@
+<div class="auth-container">
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <h2>Login</h2>
+    <input formControlName="username" placeholder="Username">
+    <input formControlName="password" type="password" placeholder="Password">
+    <button type="submit">Login</button>
+  </form>
+
+  <form [formGroup]="registerForm" (ngSubmit)="register()">
+    <h2>Register</h2>
+    <input formControlName="name" placeholder="Name">
+    <input formControlName="email" type="email" placeholder="Email">
+    <input formControlName="password" type="password" placeholder="Password">
+    <button type="submit">Register</button>
+  </form>
+</div>
